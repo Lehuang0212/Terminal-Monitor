@@ -1,0 +1,23 @@
+[Unit]
+Description=HY2 UDP traffic monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+StateDirectory=hy2mon
+ExecStart=/usr/bin/python3 /opt/hy2mon/hy2mon.py collect --interface auto --port 40000
+Restart=on-failure
+RestartSec=3
+
+AmbientCapabilities=CAP_NET_RAW
+CapabilityBoundingSet=CAP_NET_RAW
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_PACKET
+
+[Install]
+WantedBy=multi-user.target
